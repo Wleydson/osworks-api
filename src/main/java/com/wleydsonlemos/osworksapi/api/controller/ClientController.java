@@ -2,6 +2,7 @@ package com.wleydsonlemos.osworksapi.api.controller;
 
 import com.wleydsonlemos.osworksapi.domain.model.Client;
 import com.wleydsonlemos.osworksapi.domain.repository.ClientRepository;
+import com.wleydsonlemos.osworksapi.domain.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,42 +17,41 @@ import java.util.Optional;
 public class ClientController {
 
     @Autowired
-    private ClientRepository repository;
+    private ClientService service;
 
     @GetMapping
     public List<Client> findAll(){
-        return repository.findAll();
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Client> findById(@PathVariable Long id){
-        Optional<Client> client =  repository.findById(id);
-        if(client.isPresent()){
-            return ResponseEntity.ok(client.get());
+        Client client =  service.findById(id);
+        if(client == null){
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(client);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Client insert(@Valid @RequestBody Client client){
-        return repository.save(client);
+        return service.save(client);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Client> update(@PathVariable Long id, @Valid @RequestBody Client client){
-        if(repository.existsById(id)){
-            client.setId(id);
-            client = repository.save(client);
-            return ResponseEntity.ok(client);
+        client = service.update(id, client);
+        if (client == null){
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(client);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
-        if(repository.existsById(id)){
-            repository.deleteById(id);
+        boolean isDeleted = service.delete(id);
+        if(isDeleted){
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();

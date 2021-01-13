@@ -1,11 +1,14 @@
 package com.wleydsonlemos.osworksapi.api.exceptionhandle;
 
+import com.wleydsonlemos.osworksapi.domain.exception.BusinessException;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -30,4 +33,16 @@ public class ApiExceptionHandle extends ResponseEntityExceptionHandler {
 
         return super.handleExceptionInternal(ex, error, headers, status, request);
     }
+
+    @ExceptionHandler(BusinessException.class)
+    private ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request){
+        ResponseError responseError = ResponseError.builder()
+                                                    .status(HttpStatus.BAD_REQUEST.value())
+                                                    .error(ex.getMessage())
+                                                    .dateTime(LocalDateTime.now())
+                                                    .build();
+
+        return super.handleExceptionInternal(ex, responseError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
 }
