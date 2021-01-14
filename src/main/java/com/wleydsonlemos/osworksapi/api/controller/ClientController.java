@@ -1,7 +1,6 @@
 package com.wleydsonlemos.osworksapi.api.controller;
 
 import com.wleydsonlemos.osworksapi.domain.model.Client;
-import com.wleydsonlemos.osworksapi.domain.repository.ClientRepository;
 import com.wleydsonlemos.osworksapi.domain.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/client")
