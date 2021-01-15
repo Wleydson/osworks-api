@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Data
 public class OrderServiceDTO {
@@ -16,5 +17,6 @@ public class OrderServiceDTO {
     private StatusOrdemService status;
     private OffsetDateTime dateInitial;
     private OffsetDateTime dateEnd;
+    private List<CommentDTO> comments;
 
 }

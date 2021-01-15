@@ -6,7 +6,9 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -30,6 +32,9 @@ public class OrderService {
     @Enumerated(EnumType.STRING)
     private StatusOrdemService status;
 
-    private LocalDateTime dateInitial;
-    private LocalDateTime dateEnd;
+    private OffsetDateTime dateInitial;
+    private OffsetDateTime dateEnd;
+
+    @OneToMany(mappedBy = "orderService")
+    private List<Comment> comments = new ArrayList<>();
 }
