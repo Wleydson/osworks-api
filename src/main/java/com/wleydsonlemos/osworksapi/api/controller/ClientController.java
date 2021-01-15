@@ -1,6 +1,7 @@
 package com.wleydsonlemos.osworksapi.api.controller;
 
-import com.wleydsonlemos.osworksapi.domain.model.Client;
+import com.wleydsonlemos.osworksapi.api.dto.ClientDTO;
+import com.wleydsonlemos.osworksapi.api.dto.ClientInputDTO;
 import com.wleydsonlemos.osworksapi.domain.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,13 @@ public class ClientController {
     private ClientService service;
 
     @GetMapping
-    public List<Client> findAll(){
+    public List<ClientDTO> findAll(){
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Client> findById(@PathVariable Long id){
-        Client client =  service.findById(id);
+    public ResponseEntity<ClientDTO> findById(@PathVariable Long id){
+        ClientDTO client =  service.findById(id);
         if(client == null){
             return ResponseEntity.notFound().build();
         }
@@ -33,13 +34,13 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Client insert(@Valid @RequestBody Client client){
+    public ClientDTO insert(@Valid @RequestBody ClientInputDTO client){
         return service.save(client);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Client> update(@PathVariable Long id, @Valid @RequestBody Client client){
-        client = service.update(id, client);
+    public ResponseEntity<ClientDTO> update(@PathVariable Long id, @Valid @RequestBody ClientInputDTO clientInputDTO){
+        ClientDTO client = service.update(id, clientInputDTO);
         if (client == null){
             return ResponseEntity.notFound().build();
         }

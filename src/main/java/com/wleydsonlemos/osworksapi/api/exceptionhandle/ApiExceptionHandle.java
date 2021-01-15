@@ -1,7 +1,6 @@
 package com.wleydsonlemos.osworksapi.api.exceptionhandle;
 
 import com.wleydsonlemos.osworksapi.domain.exception.BusinessException;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class ApiExceptionHandle extends ResponseEntityExceptionHandler {
         ResponseError error = ResponseError.builder()
                                             .status(status.value())
                                             .error("Um ou mais campos estão inválidos")
-                                            .dateTime(LocalDateTime.now())
+                                            .dateTime(OffsetDateTime.now())
                                             .fieldsError(fieldsError)
                                             .build();
 
@@ -39,7 +38,7 @@ public class ApiExceptionHandle extends ResponseEntityExceptionHandler {
         ResponseError responseError = ResponseError.builder()
                                                     .status(HttpStatus.BAD_REQUEST.value())
                                                     .error(ex.getMessage())
-                                                    .dateTime(LocalDateTime.now())
+                                                    .dateTime(OffsetDateTime.now())
                                                     .build();
 
         return super.handleExceptionInternal(ex, responseError, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
